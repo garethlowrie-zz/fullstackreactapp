@@ -43,3 +43,17 @@ git push heroku master
 ```
 
 ## Subsequent Heroku deployments
+Inside /server
+```
+git push heroku master
+```
+
+## Userful Heroku command
+Debug issues
+```
+heroku logs
+```
+Open Heroku site
+```
+heroku open
+```
