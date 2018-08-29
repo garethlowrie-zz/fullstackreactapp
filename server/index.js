@@ -7,7 +7,7 @@ const app = express();
  *
  */
 app.get('/', (req, res) => {
-	res.send({ hi: 'there' }) // Sends JSON back and closes the request
+	res.send({ hi: 'there you' }) // Sends JSON back and closes the request
 });
 
 
