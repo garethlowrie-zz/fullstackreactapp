@@ -11,7 +11,6 @@ npm instal --save nodemon
 Add dev script to ```package.json```
 ```
 "scripts": {
-    "start": "node index.js",
     "dev": "nodemon index.js"
   },
 ```
@@ -27,6 +26,7 @@ Add engines to package.json in ```/server```
 Add scripts to package.json in ```/server```
 ```
 "scripts": {
+    "dev": "nodemon index.js",
     "start": "node index.js"
   }
 ```
