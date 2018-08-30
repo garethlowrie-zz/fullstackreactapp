@@ -108,12 +108,41 @@ module.exports = {
 ```
 const keys = require('./config/keys');
 ```
-9. Pass in clientId and clientSecret to GoogleStrategy
+9. Configure the Google Strategy created earlier
+Pass in ```clientId``` and ```clientSecret``` and ```callbackURL```
 ```
+// Configure Passport to use the Google Strategy
 passport.use(new GoogleStrategy(
 	{
 		clientId: keys.googleClientID,
-		clientSecret: keys.googleClientSecret
+		clientSecret: keys.googleClientSecret,
+		callbackURL: '/auth/google/callback'
+	}, (accessToken, refreshTokem, profile, done) => {
+		console.log(accessToken)
+		console.log(refreshTokem)
+		console.log(profile)
+		console.log(done)
 	}
 ));
+```
+9. Set up route handler
+This will send the user into the passport flow.
+```passport.authenticate``` takes two parameters, first is the strategy identification string, second tells us what we need access to via scope/permissions.
+```
+// Route that will direct user into the Google OAuth workflow
+app.get(
+	'/auth/google',
+	passport.authenticate('google', {
+		scope: ['profile', 'email']
+	})
+);
+```
+10. Add callback route 
+
+```
+// Callback route after authentication has taken place
+app.get(
+	'/auth/google/callback',
+	passport.authenticate('google')
+);
 ```
