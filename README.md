@@ -60,14 +60,14 @@ heroku open
 
 ## Set up Google OAuth for user authentication
 
-1. Install passport
+1. Install passport in ```/server```
 This module has general helpers for handling auth in Express apps.
 
 ```
 npm install --save passport
 ```
 
-2. Install passport strategy 
+2. Install passport strategy in ```/server```
 Strategy modules are helpers for authenticating for a specific authentication method (e.g. email/password, Google, Facebook)
 ```
 npm install --save passport-google-oauth20
