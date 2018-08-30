@@ -97,10 +97,23 @@ Navigate to [Google Dashboard](https://console.developers.google.com/)
 * Take note of **Client Secret**: Private token - do not share with anyone.
 
 7. Create ```/config/keys.js``` file and export the keys
-Add keys.js to git.ignore file to ensure this sensitive information is not passed up to git.
+* Add keys.js to git.ignore file to ensure this sensitive information is not passed up to git.
 ```
 module.exports = {
 	googleClientID: 'COPY TO HERE',
 	googleClientSecret: 'COPY TO HERE'
 };
+```
+8. Import keys into index.js
+```
+const keys = require('./config/keys');
+```
+9. Pass in clientId and clientSecret to GoogleStrategy
+```
+passport.use(new GoogleStrategy(
+	{
+		clientId: keys.googleClientID,
+		clientSecret: keys.googleClientSecret
+	}
+));
 ```
