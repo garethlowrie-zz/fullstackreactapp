@@ -78,3 +78,17 @@ npm install --save passport-google-oauth20
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 ```
+
+4. Tell passport how to use the strategy
+```passport.use``` will tell passport to be aware of the Google OAuth Strategy.
+```
+passport.use(new GoogleStrategy());
+```
+5. Set up Google OAuth in Google
+Navigate to [Google Dashboard|https://console.developers.google.com/]
+* Create A Project
+* Enable the ```Google+ API```
+* Generate credentials
+** Type: Web Application
+** Authorized JavaScript origins: ```http://localhost:5000```
+** Authorized redirect URIs: ```http://localhost:5000/*```
