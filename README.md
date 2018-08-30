@@ -89,6 +89,6 @@ Navigate to [Google Dashboard|https://console.developers.google.com/]
 * Create A Project
 * Enable the ```Google+ API```
 * Generate credentials
-Type: Web Application
-Authorized JavaScript origins: ```http://localhost:5000```
-Authorized redirect URIs: ```http://localhost:5000/*```
+- Type: ```Web Application```
+- Authorized JavaScript origins: ```http://localhost:5000```
+- Authorized redirect URIs: ```http://localhost:5000/*```
