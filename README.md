@@ -57,6 +57,8 @@ git push heroku master
 ## Subsequent Heroku deployments
 Inside ```/server```
 ```
+git add .
+git commit -am "MSG HERE"
 git push heroku master
 ```
 
