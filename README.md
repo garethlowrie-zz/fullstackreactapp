@@ -84,11 +84,23 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 ```
 passport.use(new GoogleStrategy());
 ```
-5. Set up Google OAuth in Google
-Navigate to [Google Dashboard|https://console.developers.google.com/]
+5. Set up Google Project
+Navigate to [Google Dashboard](https://console.developers.google.com/)
 * Create A Project
 * Enable the ```Google+ API```
-* Generate credentials
-- Type: ```Web Application```
-- Authorized JavaScript origins: ```http://localhost:5000```
-- Authorized redirect URIs: ```http://localhost:5000/*```
+
+6. Generate Google Project Credentials
+* Type: ```Web Application```
+* Authorized JavaScript origins: ```http://localhost:5000```
+* Authorized redirect URIs: ```http://localhost:5000/*```
+* Take note of **Client ID**: Public token - this can be shared public.
+* Take note of **Client Secret**: Private token - do not share with anyone.
+
+7. Create ```/config/keys.js``` file and export the keys
+Add keys.js to git.ignore file to ensure this sensitive information is not passed up to git.
+```
+module.exports = {
+	googleClientID: 'COPY TO HERE',
+	googleClientSecret: 'COPY TO HERE'
+};
+```
