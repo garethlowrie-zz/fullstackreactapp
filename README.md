@@ -160,3 +160,22 @@ app.get(
 	passport.authenticate('google')
 );
 ```
+
+
+11. Create a database
+* We will use MongoDB. You can create a new database @ mlab.com
+* Create the database.
+* Create a user for the database (not read-only)
+
+12. Install mongoose inside the ```server``` directory
+```
+npm install mongoose --save
+```
+
+13. Connect your app to your MongoDB
+Put your mongoURI into your ```config/keys``` so that it is not commited to github.
+Also update the 
+```
+const mongoose = require('mongoose');
+mongoose.connect(keys.mongoURI); // Pass the address to the connection function
+```
