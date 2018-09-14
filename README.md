@@ -6,7 +6,7 @@ Survey results will be tabulated.
 
 ## Install nodemon
 ```
-npm instal --save nodemon
+npm install --save nodemon
 ```
 Add dev script to ```package.json```
 ```
