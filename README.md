@@ -12,7 +12,7 @@ Add dev script to ```package.json```
 ```
 "scripts": {
     "dev": "nodemon index.js"
-  },
+  }
 ```
 
 ## Set up Heroku & push to Heroku
