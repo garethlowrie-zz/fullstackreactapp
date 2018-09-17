@@ -20,4 +20,10 @@ module.exports = (app) => {
 	app.get('/api/current_user', (req, res) => {
 		res.send(req.user);
 	});
+
+	app.get('/api/logout', (req, res) => {
+		// Logout is attatched to the request object automatically by passport
+		req.logout();
+		res.send(req.user);
+	});
 };
