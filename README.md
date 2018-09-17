@@ -289,7 +289,7 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
-require('./models/User');
+require('./models/User'); // This must be required before the passport service
 require('./services/passport'); // Ensure that our app loads the User configuration
 
 mongoose.connect(keys.mongoURI); // Pass the DB URI to the connection function
@@ -311,4 +311,14 @@ require('./routes/authRoutes')(app); // Immediately invoke the function exported
 const PORT = process.env.PORT || 5000; // Heroku will inject the port as an environment variable
 app.listen(PORT); // Start the express server and listen for incoming traffic on the specific port
 
+```
+
+18. Logging a user out
+Passport makes logging a user out simple. Simply add the route below.
+```
+app.get('/api/logout', (req, res) => {
+	// Logout is attatched to the request object automatically by passport
+	req.logout();
+	res.send(req.user);
+});
 ```
