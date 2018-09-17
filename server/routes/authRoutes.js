@@ -16,4 +16,8 @@ module.exports = (app) => {
 		'/auth/google/callback',
 		passport.authenticate(GOOGLE_STRATEGY_IDENTITY)
 	);
+
+	app.get('/api/current_user', (req, res) => {
+		res.send(req.user);
+	});
 };

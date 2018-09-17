@@ -6,5 +6,4 @@ const userSchema = new Schema({
 	googleId: String
 });
 
-// Convert the userSchema into a Model that we can work with
-mongoose.model('users', userSchema);
+mongoose.model('users', userSchema); // Set the 'users' model to be userSchema
