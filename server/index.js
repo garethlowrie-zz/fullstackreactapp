@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
-
-require('./services/passport');
+require('./models/User');
+require('./services/passport'); // Ensure that our app loads the User configuration
 
 mongoose.connect(keys.mongoURI); // Pass the DB URI to the connection function
 
