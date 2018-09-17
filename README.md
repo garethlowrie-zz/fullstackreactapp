@@ -227,7 +227,7 @@ passport.use(new GoogleStrategy(
 
 ```
 
-16. Encoding Users
+16. Encoding Users (inside ```passport.js```)
 * Define the serializeUser function  which will be called with the user to generate an identifying piece of information.
 ```
 passport.serializeUser((user, done) => {
@@ -246,4 +246,69 @@ passport.deserializeUser(async (id, done) => {
 		throw e;
 	}
 });
+```
+17. Enabling Cookies in Passport
+* Out of the box express doesn't know how to manage cookies so we will need to install a helper module, so we must add one.
+```
+npm install --save cookie-session
+```
+* Tell express to make use of this module. Inside ```index.js``` add the below
+```
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+
+```
+* Define a key to use for your cookie in your ```/config/keys.js``` file.
+```
+module.exports = {
+	googleClientID: 'blah1',
+	googleClientSecret: 'blah2',
+	mongoURI: 'blah3',
+	cookieKey: 'anythingYouWantInHere-go-crazy-erjgoiewrjoigjrieojwgoiwerjog'
+};
+
+```
+* Tell the express app to use cookies, 
+```
+app.use(
+	cookieSession({
+		maxAge: 2592000000, // 30 days in MS (2592000000)
+		keys: [keys.cookieKey]
+	})
+);
+```
+* Tell passport to use cookies to handle authentication, to do this add the below code to ```index.js```.
+```
+app.use(passport.initialize());
+app.use(passport.session());
+```
+* Your ```index.js``` file should now look like the below.
+```
+const express = require('express');
+const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const keys = require('./config/keys');
+require('./models/User');
+require('./services/passport'); // Ensure that our app loads the User configuration
+
+mongoose.connect(keys.mongoURI); // Pass the DB URI to the connection function
+
+const app = express();
+
+app.use(
+	cookieSession({
+		maxAge: 30 * 24 * 60 * 60 * 1000, // How long can the cookie exist until expiration
+		keys: [keys.cookieKey]
+	})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./routes/authRoutes')(app); // Immediately invoke the function exported by the passport
+
+const PORT = process.env.PORT || 5000; // Heroku will inject the port as an environment variable
+app.listen(PORT); // Start the express server and listen for incoming traffic on the specific port
+
 ```
