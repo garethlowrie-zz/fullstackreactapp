@@ -6,13 +6,13 @@ Survey results will be tabulated.
 
 ## Install nodemon
 ```
-npm instal --save nodemon
+npm install --save nodemon
 ```
 Add dev script to ```package.json```
 ```
 "scripts": {
     "dev": "nodemon index.js"
-  },
+  }
 ```
 
 ## Set up Heroku & push to Heroku
@@ -178,4 +178,25 @@ Also update the
 ```
 const mongoose = require('mongoose');
 mongoose.connect(keys.mongoURI); // Pass the address to the connection function
+```
+
+14. Create a model for each collection
+Create a ```/models``` directory inside ```/server``` then create your model e.g. ```/User.js```
+
+```
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+// Define a schema that a user document should conform too.
+const userSchema = new Schema({
+	googleId: String
+});
+
+// Convert the userSchema into a Model that we can work with
+mongoose.model('users', userSchema);
+
+```
+Then import your model
+```
+require('./models/User');
 ```
