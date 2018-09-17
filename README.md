@@ -225,5 +225,25 @@ passport.use(new GoogleStrategy(
 	}
 ));
 
+```
 
+16. Encoding Users
+* Define the serializeUser function  which will be called with the user to generate an identifying piece of information.
+```
+passport.serializeUser((user, done) => {
+	done(null, user.id); // This is the unique id in the db, not the Google ID
+});
+```
+
+* Define the deserializeUser function which takes a cookie and turns it into a user.
+```
+passport.deserializeUser(async (id, done) => {
+	try {
+		const result = await User.findById(id);
+		done(null, result); // This is the data that put inside the cookie, in our case the user id
+	}
+	catch (e) {
+		throw e;
+	}
+});
 ```
