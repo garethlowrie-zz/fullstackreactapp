@@ -202,7 +202,7 @@ require('./models/User');
 ```
 
 15. Save user to database
-Modify the callback in the ```passport.js``` file to check if the user already exists with that profile id, if not then create them.
+* Modify the callback in the ```passport.js``` file to check if the user already exists with that profile id, if not then create them.
 ```
 // Configure Passport to use the Google Strategy
 passport.use(new GoogleStrategy(
