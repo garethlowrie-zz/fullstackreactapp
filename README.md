@@ -214,12 +214,14 @@ passport.use(new GoogleStrategy(
 		const result = await User.findOne({ googleId: profile.id }) //Attempt to find an existing user
 
 		if (!result) {
-			new User({
+			const newUser = await new User({
 				googleId: profile.id
 			}).save();
+
+			done(null, newUser); // Tell passport we are finished creating the new user
 		}
-		
-		done(); // Tell passport we are finished creating the user
+
+		done(null, result); // Tell passport we are finished, pass the existing user
 	}
 ));
 
