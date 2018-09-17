@@ -200,3 +200,28 @@ Then import your model
 ```
 require('./models/User');
 ```
+
+15. Save user to database
+Modify the callback in the ```passport.js``` file to check if the user already exists with that profile id, if not then create them.
+```
+// Configure Passport to use the Google Strategy
+passport.use(new GoogleStrategy(
+	{
+		clientID: keys.googleClientID,
+		clientSecret: keys.googleClientSecret,
+		callbackURL: '/auth/google/callback'
+	}, async(accessToken, refreshToken, profile, done) => {
+		const result = await User.findOne({ googleId: profile.id }) //Attempt to find an existing user
+
+		if (!result) {
+			new User({
+				googleId: profile.id
+			}).save();
+		}
+		
+		done(); // Tell passport we are finished creating the user
+	}
+));
+
+
+```
