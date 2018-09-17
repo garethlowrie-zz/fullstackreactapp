@@ -200,3 +200,115 @@ Then import your model
 ```
 require('./models/User');
 ```
+
+15. Save user to database
+* Modify the callback in the ```passport.js``` file to check if the user already exists with that profile id, if not then create them.
+```
+// Configure Passport to use the Google Strategy
+passport.use(new GoogleStrategy(
+	{
+		clientID: keys.googleClientID,
+		clientSecret: keys.googleClientSecret,
+		callbackURL: '/auth/google/callback'
+	}, async(accessToken, refreshToken, profile, done) => {
+		const result = await User.findOne({ googleId: profile.id }) //Attempt to find an existing user
+
+		if (!result) {
+			const newUser = await new User({
+				googleId: profile.id
+			}).save();
+
+			done(null, newUser); // Tell passport we are finished creating the new user
+		}
+
+		done(null, result); // Tell passport we are finished, pass the existing user
+	}
+));
+
+```
+
+16. Encoding Users (inside ```passport.js```)
+* Define the serializeUser function  which will be called with the user to generate an identifying piece of information.
+```
+passport.serializeUser((user, done) => {
+	done(null, user.id); // This is the unique id in the db, not the Google ID
+});
+```
+
+* Define the deserializeUser function which takes a cookie and turns it into a user.
+```
+passport.deserializeUser(async (id, done) => {
+	try {
+		const result = await User.findById(id);
+		done(null, result); // This is the data that put inside the cookie, in our case the user id
+	}
+	catch (e) {
+		throw e;
+	}
+});
+```
+17. Enabling Cookies in Passport
+* Out of the box express doesn't know how to manage cookies so we will need to install a helper module, so we must add one.
+```
+npm install --save cookie-session
+```
+* Tell express to make use of this module. Inside ```index.js``` add the below
+```
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+
+```
+* Define a key to use for your cookie in your ```/config/keys.js``` file.
+```
+module.exports = {
+	googleClientID: 'blah1',
+	googleClientSecret: 'blah2',
+	mongoURI: 'blah3',
+	cookieKey: 'anythingYouWantInHere-go-crazy-erjgoiewrjoigjrieojwgoiwerjog'
+};
+
+```
+* Tell the express app to use cookies, 
+```
+app.use(
+	cookieSession({
+		maxAge: 2592000000, // 30 days in MS (2592000000)
+		keys: [keys.cookieKey]
+	})
+);
+```
+* Tell passport to use cookies to handle authentication, to do this add the below code to ```index.js```.
+```
+app.use(passport.initialize());
+app.use(passport.session());
+```
+* Your ```index.js``` file should now look like the below.
+```
+const express = require('express');
+const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const keys = require('./config/keys');
+require('./models/User');
+require('./services/passport'); // Ensure that our app loads the User configuration
+
+mongoose.connect(keys.mongoURI); // Pass the DB URI to the connection function
+
+const app = express();
+
+app.use(
+	cookieSession({
+		maxAge: 30 * 24 * 60 * 60 * 1000, // How long can the cookie exist until expiration
+		keys: [keys.cookieKey]
+	})
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./routes/authRoutes')(app); // Immediately invoke the function exported by the passport
+
+const PORT = process.env.PORT || 5000; // Heroku will inject the port as an environment variable
+app.listen(PORT); // Start the express server and listen for incoming traffic on the specific port
+
+```
